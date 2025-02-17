@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Encompass a Broad Spectrum of Human Emotion: Mixed-emotion Speech Synthesis using Task Vector and Fine-grained Representation</title>
+<meta name="generator" content="Jekyll v3.9.0">
+<meta property="og:title" content="TODO: title">
+<meta property="og:locale" content="en_US">
+<link rel="canonical" href="https://leiyi420.github.io/CSEmoTransfer">
+<meta property="og:url" content="https://leiyi420.github.io/CSEmoTransfer">
+<meta name="twitter:card" content="summary">
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body data-new-gr-c-s-check-loaded="14.1001.0" data-gr-ext-installed="">
+    <section class="page-header">
+    <p  class="project-name">
+    	Encompass a Broad Spectrum of Human Emotion: Mixed-emotion Speech Synthesis using Task Vector and Fine-grained Representation
+	</p>
+    <br>
+    <h2 class="project-tagline">
+      <center>Submitted to Interspeech 2025</center>
+      <center><a href='https://github.com/himilu728/SDG-ETTS'>Code</a></center>
+    </h2>
+    </section>
+
+<section class="main-content">
+
+<h2>0. Contents</h2>
+<ul>
+  <li><a href="#abstract">Abstract</a></li>
+  <li><a href='#Primary_Emotion_Synthesis'>Primary Emotion Synthesis</a></li>
+  	<ul>
+  		<li><a href='#Angry'>Angry</a></li>
+  		<li><a href='#Happy'>Happy</a></li>
+  		<li><a href='#Neutral'>Neutral</a></li>
+  		<li><a href='#Sad'>Sad</a></li>
+  		<li><a href='#Surprise'>Surprise</a></li>
+  	</ul>
+  <li><a href='#Mixed_emotion_Synthesis'>Mixed-emotion Synthesis</a></li>
+</ul>
+
+<br>
+<h2 id="abstract">1. Abstract<a name="abstract"></a></h2>
+<p> 
+	Due to the lack of fine-grained emotion annotation in emotional emotional text-to-speech (ETTS) datasets, existing ETTS typically utilizes utterance-level emotion representation, neglecting the inherent complexity and variability of emotion. 
+    Moreover, the limited emotion categories in the datasets makes it difficult to capture the full diversity of human emotion. 
+    To address these, we introduce fine-grained emotion annotation, which are emotional-dimension extracted chunk-wise from the speech, to capture subtle emotional variations. 
+    Further, we propose a model-level emotion mixing method based on task vectors. 
+    Specifically, we construct task vectors through the element-wise differences between the model weights fine-tuned on specific emotion and the pretrained model weights. 
+    By combining the task vectors, a new model proficient in handling mixed emotions can be obtained. 
+    ETTS experiments validate the effectiveness of the proposed fine-grained representation and mixed-emotion method.</p>
+<center><img src='fig/emomix.png'></center>
+<p style="text-align: justify; font-size:16px;font-color:#D5CFCF;margin-left: 20px;margin-right:20px ;margin-top: 10px;">
+	Fig. 1:  Proposed emotion-mixing methods. (a): How to construct the task vectors. (b): How to use the task vectors to build a new model proficient in handling mixed emotions. (c): The architecture of our TTS system.
+</p>
+
+
+<h2>2. Primary Emotion Synthesis<a name="Primary_Emotion_Synthesis"></a></h2>
+<p>
+	This test is mainly used to verify the ability of the fine-tuned model to synthesize primary emotions and the effectiveness of the introduced fine-grained annotations in improving the model's performance.
+</p>
+
+<h3>2.1 Angry<a name="Angry"></a></h3>
+<table>
+    <thead>
+    	<tr>
+    		<th style="text-align: center" rowspan="2"><strong>ID</strong></th>
+    		<th style="text-align: center"><strong>Speaker</strong></th>
+	      	<th style="text-align: center"><strong>GT</strong></th>
+	        <th style="text-align: center"><strong>GT(voc.)</strong></th>
+	        <th style="text-align: center"><strong>EmoDiff</strong></th>
+	        <th style="text-align: center"><strong>EmoMix</strong></th>
+	        <th style="text-align: center"><strong>Ours</strong></th>
+	        <th style="text-align: center"><strong>Ours w/o FGR</strong></th>
+	    </tr>
+  	</thead> 
+  	<tbody>
+		<tr>
+			<td style="text-align: center" rowspan="2">001</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/ang13_eva0351.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/ang13_eva0351.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/ang13_eva0351.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/ang13_eva0351.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/ang13_eva0351.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/ang13_eva0351.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/ang15_eva0351.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/ang15_eva0351.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/ang15_eva0351.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/ang15_eva0351.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/ang15_eva0351.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/ang15_eva0351.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">002</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/ang13_eva0352.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/ang13_eva0352.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/ang13_eva0352.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/ang13_eva0352.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/ang13_eva0352.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/ang13_eva0352.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/ang15_eva0352.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/ang15_eva0352.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/ang15_eva0352.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/ang15_eva0352.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/ang15_eva0352.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/ang15_eva0352.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">003</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/ang13_eva0353.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/ang13_eva0353.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/ang13_eva0353.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/ang13_eva0353.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/ang13_eva0353.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/ang13_eva0353.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/ang15_eva0353.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/ang15_eva0353.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/ang15_eva0353.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/ang15_eva0353.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/ang15_eva0353.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/ang15_eva0353.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">004</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/ang13_eva0354.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/ang13_eva0354.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/ang13_eva0354.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/ang13_eva0354.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/ang13_eva0354.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/ang13_eva0354.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/ang15_eva0354.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/ang15_eva0354.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/ang15_eva0354.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/ang15_eva0354.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/ang15_eva0354.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/ang15_eva0354.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">005</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/ang13_eva0355.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/ang13_eva0355.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/ang13_eva0355.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/ang13_eva0355.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/ang13_eva0355.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/ang13_eva0355.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/ang15_eva0355.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/ang15_eva0355.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/ang15_eva0355.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/ang15_eva0355.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/ang15_eva0355.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/ang15_eva0355.wav" controls="" preload=""></audio></td>
+        </tr>
+	</tbody>
+</table>
+
+
+<h3>2.2 Happy<a name="Happy"></a></h3>
+<table>
+   <thead>
+    	<tr>
+    		<th style="text-align: center" rowspan="2"><strong>ID</strong></th>
+    		<th style="text-align: center"><strong>Speaker</strong></th>
+	      	<th style="text-align: center"><strong>GT</strong></th>
+	        <th style="text-align: center"><strong>GT(voc.)</strong></th>
+	        <th style="text-align: center"><strong>EmoDiff</strong></th>
+	        <th style="text-align: center"><strong>EmoMix</strong></th>
+	        <th style="text-align: center"><strong>Ours</strong></th>
+	        <th style="text-align: center"><strong>Ours w/o FGR</strong></th>
+	    </tr>
+  	</thead> 
+  	<tbody>
+		<tr>
+			<td style="text-align: center" rowspan="2">001</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/hap13_eva0711.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/hap13_eva0711.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/hap13_eva0711.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/hap13_eva0711.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/hap13_eva0711.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/hap13_eva0711.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/hap15_eva0711.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/hap15_eva0711.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/hap15_eva0711.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/hap15_eva0711.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/hap15_eva0711.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/hap15_eva0711.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">002</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/hap13_eva0712.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/hap13_eva0712.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/hap13_eva0712.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/hap13_eva0712.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/hap13_eva0712.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/hap13_eva0712.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/hap15_eva0712.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/hap15_eva0712.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/hap15_eva0712.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/hap15_eva0712.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/hap15_eva0712.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/hap15_eva0712.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">003</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/hap13_eva0713.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/hap13_eva0713.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/hap13_eva0713.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/hap13_eva0713.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/hap13_eva0713.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/hap13_eva0713.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/hap15_eva0713.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/hap15_eva0713.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/hap15_eva0713.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/hap15_eva0713.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/hap15_eva0713.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/hap15_eva0713.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">004</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/hap13_eva0714.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/hap13_eva0714.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/hap13_eva0714.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/hap13_eva0714.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/hap13_eva0714.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/hap13_eva0714.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/hap15_eva0714.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/hap15_eva0714.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/hap15_eva0714.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/hap15_eva0714.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/hap15_eva0714.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/hap15_eva0714.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">005</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/hap13_eva0715.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/hap13_eva0715.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/hap13_eva0715.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/hap13_eva0715.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/hap13_eva0715.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/hap13_eva0715.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/hap15_eva0715.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/hap15_eva0715.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/hap15_eva0715.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/hap15_eva0715.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/hap15_eva0715.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/hap15_eva0715.wav" controls="" preload=""></audio></td>
+        </tr>
+	</tbody>
+</table>
+
+<h3>2.3 Neutral<a name="Neutral"></a></h3>
+<table>
+   <thead>
+    	<tr>
+    		<th style="text-align: center" rowspan="2"><strong>ID</strong></th>
+    		<th style="text-align: center"><strong>Speaker</strong></th>
+	      	<th style="text-align: center"><strong>GT</strong></th>
+	        <th style="text-align: center"><strong>GT(voc.)</strong></th>
+	        <th style="text-align: center"><strong>EmoDiff</strong></th>
+	        <th style="text-align: center"><strong>EmoMix</strong></th>
+	        <th style="text-align: center"><strong>Ours</strong></th>
+	        <th style="text-align: center"><strong>Ours w/o FGR</strong></th>
+	    </tr>
+  	</thead> 
+  	<tbody>
+		<tr>
+			<td style="text-align: center" rowspan="2">001</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/neu13_eva0001.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/neu13_eva0001.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/neu13_eva0001.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/neu13_eva0001.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/neu13_eva0001.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/neu13_eva0001.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/neu15_eva0001.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/neu15_eva0001.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/neu15_eva0001.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/neu15_eva0001.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/neu15_eva0001.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/neu15_eva0001.wav" controls="" preload=""></audio></td>
+        </tr>
+        
+        <tr>
+			<td style="text-align: center" rowspan="2">002</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/neu13_eva0002.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/neu13_eva0002.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/neu13_eva0002.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/neu13_eva0002.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/neu13_eva0002.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/neu13_eva0002.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/neu15_eva0002.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/neu15_eva0002.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/neu15_eva0002.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/neu15_eva0002.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/neu15_eva0002.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/neu15_eva0002.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">003</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/neu13_eva0003.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/neu13_eva0003.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/neu13_eva0003.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/neu13_eva0003.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/neu13_eva0003.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/neu13_eva0003.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/neu15_eva0003.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/neu15_eva0003.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/neu15_eva0003.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/neu15_eva0003.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/neu15_eva0003.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/neu15_eva0003.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">004</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/neu13_eva0004.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/neu13_eva0004.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/neu13_eva0004.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/neu13_eva0004.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/neu13_eva0004.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/neu13_eva0004.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/neu15_eva0004.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/neu15_eva0004.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/neu15_eva0004.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/neu15_eva0004.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/neu15_eva0004.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/neu15_eva0004.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">005</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/neu13_eva0005.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/neu13_eva0005.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/neu13_eva0005.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/neu13_eva0005.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/neu13_eva0005.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/neu13_eva0005.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/neu15_eva0005.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/neu15_eva0005.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/neu15_eva0005.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/neu15_eva0005.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/neu15_eva0005.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/neu15_eva0005.wav" controls="" preload=""></audio></td>
+        </tr>
+	</tbody>
+</table>
+
+<h3>2.4 Sad<a name="Sad"></a></h3>
+<table>
+   <thead>
+    	<tr>
+    		<th style="text-align: center" rowspan="2"><strong>ID</strong></th>
+    		<th style="text-align: center"><strong>Speaker</strong></th>
+	      	<th style="text-align: center"><strong>GT</strong></th>
+	        <th style="text-align: center"><strong>GT(voc.)</strong></th>
+	        <th style="text-align: center"><strong>EmoDiff</strong></th>
+	        <th style="text-align: center"><strong>EmoMix</strong></th>
+	        <th style="text-align: center"><strong>Ours</strong></th>
+	        <th style="text-align: center"><strong>Ours w/o FGR</strong></th>
+	    </tr>
+  	</thead> 
+  	<tbody>
+		<tr>
+			<td style="text-align: center" rowspan="2">001</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/sad13_eva1061.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/sad13_eva1061.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/sad13_eva1061.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/sad13_eva1061.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/sad13_eva1061.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/sad13_eva1061.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/sad15_eva1061.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/sad15_eva1061.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/sad15_eva1061.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/sad15_eva1061.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/sad15_eva1061.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/sad15_eva1061.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">002</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/sad13_eva1062.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/sad13_eva1062.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/sad13_eva1062.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/sad13_eva1062.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/sad13_eva1062.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/sad13_eva1062.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/sad15_eva1062.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/sad15_eva1062.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/sad15_eva1062.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/sad15_eva1062.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/sad15_eva1062.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/sad15_eva1062.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">003</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/sad13_eva1063.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/sad13_eva1063.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/sad13_eva1063.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/sad13_eva1063.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/sad13_eva1063.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/sad13_eva1063.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/sad15_eva1063.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/sad15_eva1063.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/sad15_eva1063.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/sad15_eva1063.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/sad15_eva1063.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/sad15_eva1063.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">004</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/sad13_eva1064.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/sad13_eva1064.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/sad13_eva1064.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/sad13_eva1064.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/sad13_eva1064.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/sad13_eva1064.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/sad15_eva1064.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/sad15_eva1064.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/sad15_eva1064.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/sad15_eva1064.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/sad15_eva1064.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/sad15_eva1064.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">005</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/sad13_eva1065.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/sad13_eva1065.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/sad13_eva1065.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/sad13_eva1065.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/sad13_eva1065.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/sad13_eva1065.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/sad15_eva1065.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/sad15_eva1065.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/sad15_eva1065.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/sad15_eva1065.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/sad15_eva1065.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/sad15_eva1065.wav" controls="" preload=""></audio></td>
+        </tr>
+	</tbody>
+</table>
+
+<h3>2.5 Surprise<a name="Surprise"></a></h3>
+<table>
+   <thead>
+    	<tr>
+    		<th style="text-align: center" rowspan="2"><strong>ID</strong></th>
+    		<th style="text-align: center"><strong>Speaker</strong></th>
+	      	<th style="text-align: center"><strong>GT</strong></th>
+	        <th style="text-align: center"><strong>GT(voc.)</strong></th>
+	        <th style="text-align: center"><strong>EmoDiff</strong></th>
+	        <th style="text-align: center"><strong>EmoMix</strong></th>
+	        <th style="text-align: center"><strong>Ours</strong></th>
+	        <th style="text-align: center"><strong>Ours w/o FGR</strong></th>
+	    </tr>
+  	</thead> 
+  	<tbody>
+		<tr>
+			<td style="text-align: center" rowspan="2">001</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/sur13_eva1401.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/sur13_eva1401.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/sur13_eva1401.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/sur13_eva1401.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/sur13_eva1401.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/sur13_eva1401.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/sur15_eva1401.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/sur15_eva1401.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/sur15_eva1401.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/sur15_eva1401.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/sur15_eva1401.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/sur15_eva1401.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">002</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/sur13_eva1402.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/sur13_eva1402.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/sur13_eva1402.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/sur13_eva1402.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/sur13_eva1402.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/sur13_eva1402.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/sur15_eva1402.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/sur15_eva1402.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/sur15_eva1402.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/sur15_eva1402.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/sur15_eva1402.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/sur15_eva1402.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">003</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/sur13_eva1403.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/sur13_eva1403.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/sur13_eva1403.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/sur13_eva1403.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/sur13_eva1403.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/sur13_eva1403.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/sur13_eva1403.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/sur13_eva1403.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/sur13_eva1403.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/sur13_eva1403.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/sur13_eva1403.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/sur13_eva1403.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">004</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/sur13_eva1404.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/sur13_eva1404.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/sur13_eva1404.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/sur13_eva1404.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/sur13_eva1404.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/sur13_eva1404.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/sur15_eva1404.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/sur15_eva1404.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/sur15_eva1404.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/sur15_eva1404.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/sur15_eva1404.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/sur15_eva1404.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="2">005</td>
+			<td style="text-align: center">0013</td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT/sur13_eva1405.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/ESD_GT_voc/sur13_eva1405.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/13/emodiff/sur13_eva1405.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/emomix/sur13_eva1405.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_with_emo/sur13_eva1405.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/13/Ours_no_emo/sur13_eva1405.wav" controls="" preload=""></audio></td>
+        </tr>
+        <tr>
+			<td style="text-align: center">0015</td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT/sur15_eva1405.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/ESD_GT_voc/sur15_eva1405.wav" controls="" preload=""></audio></td>
+	        <td style="text-align: left"><audio src="sample/15/emodiff/sur15_eva1405.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/emomix/sur15_eva1405.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_with_emo/sur15_eva1405.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="sample/15/Ours_no_emo/sur15_eva1405.wav" controls="" preload=""></audio></td>
+        </tr>
+	</tbody>
+</table>
+
+
+
+<h2>3. Mixed-emotion Synthesis<a name="Mixed_emotion_Synthesis"></a></h2>
+
+
+<p>
+	Mixed-emotion samples.
+</p>
+<h3>3.1 Surprise with Angry<a name="Surprise_with_Angry"></a></h3>
+<table>
+	<thead>
+    	<tr>
+    		<th style="text-align: center"><strong>ID</strong></th>
+    		<th style="text-align: center"><strong>Speaker</strong></th>
+    		<th style="text-align: center"><strong>Configure</strong></th>
+    		<th style="text-align: center"><strong>Ours</strong></th>
+	      	<th style="text-align: center"><strong>Emomix</strong></th>
+	    </tr>
+  	</thead> 
+  	<tbody>
+        <tr>
+			<td style="text-align: center" rowspan="8">001</td>
+			<td style="text-align: center" rowspan="4">0013</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.2_sur_0.8_ang/neu13_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.2_sur_0.8_ang/neu13_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.4_sur_0.6_ang/neu13_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.4_sur_0.6_ang/neu13_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.6_sur_0.4_ang/neu13_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.6_sur_0.4_ang/neu13_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.8_sur_0.2_ang/neu13_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.8_sur_0.2_ang/neu13_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="4">0015</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.2_sur_0.8_ang/neu15_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.2_sur_0.8_ang/neu15_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.4_sur_0.6_ang/neu15_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.4_sur_0.6_ang/neu15_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.6_sur_0.4_ang/neu15_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.6_sur_0.4_ang/neu15_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.8_sur_0.2_ang/neu15_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.8_sur_0.2_ang/neu15_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        
+        <tr>
+			<td style="text-align: center" rowspan="8">002</td>
+			<td style="text-align: center" rowspan="4">0013</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.2_sur_0.8_ang/neu13_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.2_sur_0.8_ang/neu13_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.4_sur_0.6_ang/neu13_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.4_sur_0.6_ang/neu13_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.6_sur_0.4_ang/neu13_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.6_sur_0.4_ang/neu13_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.8_sur_0.2_ang/neu13_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.8_sur_0.2_ang/neu13_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        <tr>
+			<td style="text-align: center" rowspan="4">0015</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.2_sur_0.8_ang/neu15_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.2_sur_0.8_ang/neu15_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.4_sur_0.6_ang/neu15_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.4_sur_0.6_ang/neu15_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.6_sur_0.4_ang/neu15_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.6_sur_0.4_ang/neu15_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.8_sur_0.2_ang/neu15_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.8_sur_0.2_ang/neu15_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        
+        <tr>
+			<td style="text-align: center" rowspan="8">003</td>
+			<td style="text-align: center" rowspan="4">0013</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.2_sur_0.8_ang/neu13_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.2_sur_0.8_ang/neu13_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.4_sur_0.6_ang/neu13_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.4_sur_0.6_ang/neu13_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.6_sur_0.4_ang/neu13_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.6_sur_0.4_ang/neu13_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.8_sur_0.2_ang/neu13_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.8_sur_0.2_ang/neu13_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        <tr>
+			<td style="text-align: center" rowspan="4">0015</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.2_sur_0.8_ang/neu15_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.2_sur_0.8_ang/neu15_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.4_sur_0.6_ang/neu15_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.4_sur_0.6_ang/neu15_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.6_sur_0.4_ang/neu15_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.6_sur_0.4_ang/neu15_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.8_sur_0.2_ang/neu15_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.8_sur_0.2_ang/neu15_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        
+        <tr>
+			<td style="text-align: center" rowspan="8">004</td>
+			<td style="text-align: center" rowspan="4">0013</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.2_sur_0.8_ang/neu13_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.2_sur_0.8_ang/neu13_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.4_sur_0.6_ang/neu13_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.4_sur_0.6_ang/neu13_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.6_sur_0.4_ang/neu13_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.6_sur_0.4_ang/neu13_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.8_sur_0.2_ang/neu13_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.8_sur_0.2_ang/neu13_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        <tr>
+			<td style="text-align: center" rowspan="4">0015</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.2_sur_0.8_ang/neu15_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.2_sur_0.8_ang/neu15_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.4_sur_0.6_ang/neu15_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.4_sur_0.6_ang/neu15_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.6_sur_0.4_ang/neu15_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.6_sur_0.4_ang/neu15_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.8_sur_0.2_ang/neu15_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.8_sur_0.2_ang/neu15_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        
+        <tr>
+			<td style="text-align: center" rowspan="8">005</td>
+			<td style="text-align: center" rowspan="4">0013</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.2_sur_0.8_ang/neu13_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.2_sur_0.8_ang/neu13_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.4_sur_0.6_ang/neu13_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.4_sur_0.6_ang/neu13_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.6_sur_0.4_ang/neu13_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.6_sur_0.4_ang/neu13_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.8_sur_0.2_ang/neu13_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.8_sur_0.2_ang/neu13_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        <tr>
+			<td style="text-align: center" rowspan="4">0015</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.2_sur_0.8_ang/neu15_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.2_sur_0.8_ang/neu15_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.4_sur_0.6_ang/neu15_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.4_sur_0.6_ang/neu15_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.6_sur_0.4_ang/neu15_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.6_sur_0.4_ang/neu15_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.8_sur_0.2_ang/neu15_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.8_sur_0.2_ang/neu15_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        
+   </tboby>
+</table>
+
+<h3>3.2 Surprise with Happy<a name="Surprise_with_Happy"></a></h3>
+<table>
+	<thead>
+    	<tr>
+    		<th style="text-align: center"><strong>ID</strong></th>
+    		<th style="text-align: center"><strong>Speaker</strong></th>
+    		<th style="text-align: center"><strong>Configure</strong></th>
+    		<th style="text-align: center"><strong>Ours</strong></th>
+	      	<th style="text-align: center"><strong>Emomix</strong></th>
+	    </tr>
+  	</thead> 
+  	<tbody>
+        <tr>
+			<td style="text-align: center" rowspan="8">001</td>
+			<td style="text-align: center" rowspan="4">0013</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.2_sur_0.8_hap/neu13_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.2_sur_0.8_hap/neu13_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.4_sur_0.6_hap/neu13_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.4_sur_0.6_hap/neu13_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.6_sur_0.4_hap/neu13_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.6_sur_0.4_hap/neu13_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.8_sur_0.2_hap/neu13_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.8_sur_0.2_hap/neu13_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="4">0015</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.2_sur_0.8_hap/neu15_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.2_sur_0.8_hap/neu15_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.4_sur_0.6_hap/neu15_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.4_sur_0.6_hap/neu15_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.6_sur_0.4_hap/neu15_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.6_sur_0.4_hap/neu15_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.8_sur_0.2_hap/neu15_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.8_sur_0.2_hap/neu15_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        
+        <tr>
+			<td style="text-align: center" rowspan="8">002</td>
+			<td style="text-align: center" rowspan="4">0013</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.2_sur_0.8_hap/neu13_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.2_sur_0.8_hap/neu13_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.4_sur_0.6_hap/neu13_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.4_sur_0.6_hap/neu13_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.6_sur_0.4_hap/neu13_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.6_sur_0.4_hap/neu13_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.8_sur_0.2_hap/neu13_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.8_sur_0.2_hap/neu13_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        <tr>
+			<td style="text-align: center" rowspan="4">0015</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.2_sur_0.8_hap/neu15_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.2_sur_0.8_hap/neu15_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.4_sur_0.6_hap/neu15_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.4_sur_0.6_hap/neu15_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.6_sur_0.4_hap/neu15_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.6_sur_0.4_hap/neu15_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.8_sur_0.2_hap/neu15_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.8_sur_0.2_hap/neu15_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        
+        <tr>
+			<td style="text-align: center" rowspan="8">003</td>
+			<td style="text-align: center" rowspan="4">0013</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.2_sur_0.8_hap/neu13_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.2_sur_0.8_hap/neu13_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.4_sur_0.6_hap/neu13_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.4_sur_0.6_hap/neu13_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.6_sur_0.4_hap/neu13_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.6_sur_0.4_hap/neu13_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.8_sur_0.2_hap/neu13_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.8_sur_0.2_hap/neu13_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        <tr>
+			<td style="text-align: center" rowspan="4">0015</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.2_sur_0.8_hap/neu15_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.2_sur_0.8_hap/neu15_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.4_sur_0.6_hap/neu15_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.4_sur_0.6_hap/neu15_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.6_sur_0.4_hap/neu15_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.6_sur_0.4_hap/neu15_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.8_sur_0.2_hap/neu15_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.8_sur_0.2_hap/neu15_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        
+        <tr>
+			<td style="text-align: center" rowspan="8">004</td>
+			<td style="text-align: center" rowspan="4">0013</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.2_sur_0.8_hap/neu13_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.2_sur_0.8_hap/neu13_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.4_sur_0.6_hap/neu13_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.4_sur_0.6_hap/neu13_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.6_sur_0.4_hap/neu13_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.6_sur_0.4_hap/neu13_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.8_sur_0.2_hap/neu13_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.8_sur_0.2_hap/neu13_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        <tr>
+			<td style="text-align: center" rowspan="4">0015</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.2_sur_0.8_hap/neu15_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.2_sur_0.8_hap/neu15_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.4_sur_0.6_hap/neu15_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.4_sur_0.6_hap/neu15_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.6_sur_0.4_hap/neu15_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.6_sur_0.4_hap/neu15_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.8_sur_0.2_hap/neu15_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.8_sur_0.2_hap/neu15_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        
+        <tr>
+			<td style="text-align: center" rowspan="8">005</td>
+			<td style="text-align: center" rowspan="4">0013</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.2_sur_0.8_hap/neu13_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.2_sur_0.8_hap/neu13_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.4_sur_0.6_hap/neu13_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.4_sur_0.6_hap/neu13_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.6_sur_0.4_hap/neu13_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.6_sur_0.4_hap/neu13_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.8_sur_0.2_hap/neu13_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.8_sur_0.2_hap/neu13_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        <tr>
+			<td style="text-align: center" rowspan="4">0015</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.2_sur_0.8_hap/neu15_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.2_sur_0.8_hap/neu15_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.4_sur_0.6_hap/neu15_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.4_sur_0.6_hap/neu15_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.6_sur_0.4_hap/neu15_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.6_sur_0.4_hap/neu15_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.8_sur_0.2_hap/neu15_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.8_sur_0.2_hap/neu15_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        
+   </tboby>
+</table>
+
+<h3>3.3 Surprise with Sad<a name="Surprise_with_Sad"></a></h3>
+<table>
+	<thead>
+    	<tr>
+    		<th style="text-align: center"><strong>ID</strong></th>
+    		<th style="text-align: center"><strong>Speaker</strong></th>
+    		<th style="text-align: center"><strong>Configure</strong></th>
+    		<th style="text-align: center"><strong>Ours</strong></th>
+	      	<th style="text-align: center"><strong>Emomix</strong></th>
+	    </tr>
+  	</thead> 
+  	<tbody>
+        <tr>
+			<td style="text-align: center" rowspan="8">001</td>
+			<td style="text-align: center" rowspan="4">0013</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.2_sur_0.8_sad/neu13_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.2_sur_0.8_sad/neu13_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.4_sur_0.6_sad/neu13_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.4_sur_0.6_sad/neu13_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.6_sur_0.4_sad/neu13_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.6_sur_0.4_sad/neu13_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.8_sur_0.2_sad/neu13_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.8_sur_0.2_sad/neu13_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+			<td style="text-align: center" rowspan="4">0015</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.2_sur_0.8_sad/neu15_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.2_sur_0.8_sad/neu15_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.4_sur_0.6_sad/neu15_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.4_sur_0.6_sad/neu15_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.6_sur_0.4_sad/neu15_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.6_sur_0.4_sad/neu15_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.8_sur_0.2_sad/neu15_eva0001.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.8_sur_0.2_sad/neu15_eva0001.wav" controls="" preload=""></audio></td>    
+        </tr>
+        
+        <tr>
+			<td style="text-align: center" rowspan="8">002</td>
+			<td style="text-align: center" rowspan="4">0013</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.2_sur_0.8_sad/neu13_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.2_sur_0.8_sad/neu13_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.4_sur_0.6_sad/neu13_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.4_sur_0.6_sad/neu13_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.6_sur_0.4_sad/neu13_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.6_sur_0.4_sad/neu13_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.8_sur_0.2_sad/neu13_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.8_sur_0.2_sad/neu13_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        <tr>
+			<td style="text-align: center" rowspan="4">0015</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.2_sur_0.8_sad/neu15_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.2_sur_0.8_sad/neu15_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.4_sur_0.6_sad/neu15_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.4_sur_0.6_sad/neu15_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.6_sur_0.4_sad/neu15_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.6_sur_0.4_sad/neu15_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.8_sur_0.2_sad/neu15_eva0002.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.8_sur_0.2_sad/neu15_eva0002.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        
+        <tr>
+			<td style="text-align: center" rowspan="8">003</td>
+			<td style="text-align: center" rowspan="4">0013</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.2_sur_0.8_sad/neu13_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.2_sur_0.8_sad/neu13_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.4_sur_0.6_sad/neu13_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.4_sur_0.6_sad/neu13_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.6_sur_0.4_sad/neu13_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.6_sur_0.4_sad/neu13_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.8_sur_0.2_sad/neu13_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.8_sur_0.2_sad/neu13_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        <tr>
+			<td style="text-align: center" rowspan="4">0015</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.2_sur_0.8_sad/neu15_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.2_sur_0.8_sad/neu15_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.4_sur_0.6_sad/neu15_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.4_sur_0.6_sad/neu15_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.6_sur_0.4_sad/neu15_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.6_sur_0.4_sad/neu15_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.8_sur_0.2_sad/neu15_eva0003.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.8_sur_0.2_sad/neu15_eva0003.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        
+        <tr>
+			<td style="text-align: center" rowspan="8">004</td>
+			<td style="text-align: center" rowspan="4">0013</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.2_sur_0.8_sad/neu13_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.2_sur_0.8_sad/neu13_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.4_sur_0.6_sad/neu13_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.4_sur_0.6_sad/neu13_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.6_sur_0.4_sad/neu13_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.6_sur_0.4_sad/neu13_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.8_sur_0.2_sad/neu13_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.8_sur_0.2_sad/neu13_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        <tr>
+			<td style="text-align: center" rowspan="4">0015</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.2_sur_0.8_sad/neu15_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.2_sur_0.8_sad/neu15_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.4_sur_0.6_sad/neu15_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.4_sur_0.6_sad/neu15_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.6_sur_0.4_sad/neu15_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.6_sur_0.4_sad/neu15_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.8_sur_0.2_sad/neu15_eva0004.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.8_sur_0.2_sad/neu15_eva0004.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        
+        <tr>
+			<td style="text-align: center" rowspan="8">005</td>
+			<td style="text-align: center" rowspan="4">0013</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.2_sur_0.8_sad/neu13_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.2_sur_0.8_sad/neu13_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.4_sur_0.6_sad/neu13_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.4_sur_0.6_sad/neu13_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.6_sur_0.4_sad/neu13_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.6_sur_0.4_sad/neu13_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/13/Ours_emomixture/0.8_sur_0.2_sad/neu13_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/13/emomix_emomix/0.8_sur_0.2_sad/neu13_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        <tr>
+			<td style="text-align: center" rowspan="4">0015</td>
+			<td style="text-align: center" >20%, 80%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.2_sur_0.8_sad/neu15_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.2_sur_0.8_sad/neu15_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >40%, 60%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.4_sur_0.6_sad/neu15_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.4_sur_0.6_sad/neu15_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >60%, 40%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.6_sur_0.4_sad/neu15_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.6_sur_0.4_sad/neu15_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+        <tr>
+        	<td style="text-align: center" >80%, 20%</td>
+			<td style="text-align: left"><audio src="sample/15/Ours_emomixture/0.8_sur_0.2_sad/neu15_eva0005.wav" controls="" preload=""></audio></td>
+			<td style="text-align: left"><audio src="sample/15/emomix_emomix/0.8_sur_0.2_sad/neu15_eva0005.wav" controls="" preload=""></audio></td>    
+        </tr>
+
+        
+   </tboby>
+</table>
+
+  <br>
+  <hr>
+  <br>
+	    <footer class="site-footer">
+	        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com/">GitHub Pages</a>.</span>
+	    </footer>
+    </section>
+	</body>
+</html>
+
